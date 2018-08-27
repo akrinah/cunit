@@ -180,5 +180,7 @@ TestResult selftest_alltests() {
   addTest(&suite, &testCmpFloat,   "testCmpFloat");
   addTest(&suite, &testCmpString,  "testCmpString");
   addTest(&suite, &testCmpMemory,  "testCmpMemory");
-  return run(&suite);
+  TestResult result = run(&suite);
+  deleteSuite(&suite);
+  return result;
 }

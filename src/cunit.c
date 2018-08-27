@@ -131,16 +131,30 @@ TestSuite newSuite(const char* name, const char* description) {
   TestSuite suite = {};
   suite.name = name;
   suite.description = description;
+  suite.numTests = 0;
+  suite.tests = NULL;
   return suite;
 }
 
 
+void deleteSuite(TestSuite* suite) {
+  free(suite->tests);
+  suite->numTests = 0;
+  suite->tests = NULL;
+}
+
+
 void addTest(TestSuite* suite, TEST_FN fn, const char* name) {
-  Test* temp = suite->tests;
-  suite->tests = (Test*) malloc((suite->numTests + 1) * sizeof(Test));
-  suite->tests = memcpy(suite->tests, temp, suite->numTests * sizeof(Test));
-  suite->tests[suite->numTests++] = (Test) { name, fn };
-  free(temp);
+  Test* temp = (Test*) malloc((suite->numTests + 1) * sizeof(Test));
+  if (temp == NULL) {
+    printf(__PROMPT RED "FATAL: " RST "couldn't allocate memory for test [%s]\n",
+           __FILE__, __LINE__, name);
+  } else {
+    memcpy(temp, suite->tests, suite->numTests * sizeof(Test));
+    free(suite->tests);
+    suite->tests = temp;
+    suite->tests[suite->numTests++] = (Test) { name, fn };
+  }
 }
 
 

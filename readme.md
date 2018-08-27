@@ -52,7 +52,9 @@ static TestResult testCase() {
 TestResult template_alltests() {
   TestSuite suite = newSuite(__FILE__, "Test Suite Template");
   addTest(&suite, &testCase, "testCase");
-  return run(&suite);
+  TestResult result = run(&suite);
+  deleteSuite(&suite);
+  return result;
 }
 
 
@@ -191,6 +193,8 @@ TestResult unite(TestResult a, TestResult b);  // returns the united test result
 void apply(TestResult* result, bool testResult);  // applies a boolean to a result
 
 TestSuite newSuite(const char* name, const char* description);  // create new test suite
+
+void deleteSuite(TestSuite* suite);  // delete all added tests
 
 void addTest(TestSuite* suite, TEST_FN fn, const char* name);  // adds a test case to a suite
 

@@ -53,5 +53,7 @@ TestResult template_alltests() {
   TestSuite suite = newSuite(__FILE__, "Test Suite Template");
   addTest(&suite, &simpleTest,     "simpleTest");
   addTest(&suite, &testWithMacros, "testWithMacros");
-  return run(&suite);
+  TestResult result = run(&suite);
+  deleteSuite(&suite);
+  return result;
 }
