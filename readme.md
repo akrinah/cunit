@@ -49,10 +49,10 @@ static TestResult testCase() {
   return result;
 }
 
-TestResult template_alltests() {
+TestResult template_alltests(PrintLevel verbosity) {
   TestSuite suite = newSuite(__FILE__, "Test Suite Template");
   addTest(&suite, &testCase, "testCase");
-  TestResult result = run(&suite);
+  TestResult result = run(&suite, verbosity);
   deleteSuite(&suite);
   return result;
 }
@@ -61,15 +61,26 @@ TestResult template_alltests() {
 // inside main.c
 #include "cunit.h"
 
-extern TestResult template_alltests();
+extern TestResult template_alltests(PrintLevel);
 
 int main() {
   TestResult result = {};
-  result = unite(result, template_alltests());
+  result = unite(result, template_alltests(VERBOSE));
   printf("Result: %d of %d tests failed\n", result.failedTests, result.totalTests);
   return 0;
 }
 ```
+
+
+Modifying Verbosity
+-------------------
+
+By passing a `PrintLevel` to `alltests()` (which is propagated to `run()`) of a test suite one
+can apply the level of detail for the output. If the level is set to `VERBOSE` then the test
+suite will print the result of every assertion. By passing `SPARSE` the summary of each test case
+is printed. `SILENT` will cancel any output. When developping on a new test suite teh `VERBOSE`
+level is best suited. Once all test cases pass, one can set the level to `SPARSE` to squash the
+output.
 
 
 Writing Custom Assertions
@@ -118,17 +129,19 @@ If they don't suffice your needs you can simply write your own assert function.
 
 #define assertEqual(val, exp) __assertEqual(__FILE__, __LINE__, val, exp)
 bool __assertEqual(const char* file, int line, int value, int expected) {
-  printf(__PROMPT, file, line);
+  printVerbose(__PROMPT, file, line);
   if (value == expected) {
-    printf(GRN "OK\n" RST);
+    printVerbose(GRN "OK\n" RST);
     return true;
   } else {
-    printf(RED "ERROR: " RST "expected [%d] == [%d]\n", value, expected);
+    printVerbose(RED "ERROR: " RST "expected [%d] == [%d]\n", value, expected);
     return false;
   }
 }
-
 ```
+
+To imitate the output behavior of CUnit it is adviced to use the provided `printVerbose()` function
+instead of `printf()`.
 
 
 Using Macros
@@ -158,8 +171,10 @@ static TestResult example() {
   TEST(assertEqualInt(42, 42));   // won't be reached
   return result;                  // result has 3 failed tests out of 4
 }
-
 ```
+
+All macros are effected by the verbosity level and are set to `VERBOSE`. That cannot be modified.
+
 
 Data Structures and Functions
 -----------------------------
@@ -169,6 +184,10 @@ cases. Results are collected in the `TestResult` structure and propagated to the
 
 ```c
 typedef TestResult (*TEST_FN)();
+
+typedef enum PrintLevel {
+  SILENT, SPARSE, VERBOSE
+} PrintLevel;
 
 typedef struct TestResult {
   int failedTests;
@@ -198,5 +217,11 @@ void deleteSuite(TestSuite* suite);  // delete all added tests
 
 void addTest(TestSuite* suite, TEST_FN fn, const char* name);  // adds a test case to a suite
 
-TestResult run(const TestSuite* suite);  // executes all added tests in a suite
+TestResult run(const TestSuite* suite, PrintLevel verbosity);  // executes all tests in a suite
+
+void printVerbose(const char* format, ...);  // print when level is set to VERBOSE or higher
+
+void printSparse(const char* format, ...);  // print if level is set to SPARSE or higher
+
+void printAlways(const char* format, ...);  // ignore the level and print
 ```

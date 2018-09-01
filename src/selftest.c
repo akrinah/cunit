@@ -172,7 +172,7 @@ static TestResult testCmpMemory() {
 }
 
 
-TestResult selftest_alltests() {
+TestResult selftest_alltests(PrintLevel verbosity) {
   TestSuite suite = newSuite(__FILE__, "Self Test and Demo");
   addTest(&suite, &simpleTest,     "simpleTest");
   addTest(&suite, &testMacros,     "testMacros");
@@ -180,7 +180,7 @@ TestResult selftest_alltests() {
   addTest(&suite, &testCmpFloat,   "testCmpFloat");
   addTest(&suite, &testCmpString,  "testCmpString");
   addTest(&suite, &testCmpMemory,  "testCmpMemory");
-  TestResult result = run(&suite);
+  TestResult result = run(&suite, verbosity);
   deleteSuite(&suite);
   return result;
 }
