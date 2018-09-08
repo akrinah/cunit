@@ -44,8 +44,8 @@ then compile all your test suites together with a `main()` function to create an
 
 static TestResult testCase() {
   TestResult result = {};
-  apply(&result, assertEqualInt(13, 42));
-  TEST(assertEqualInt(13, 42));  // does exactly the same as the line above
+  apply(&result, assertEqualInt(42, 42));
+  TEST(assertEqualInt(42, 42));  // does exactly the same as the line above
   return result;
 }
 
@@ -78,8 +78,8 @@ Modifying Verbosity
 By passing a `PrintLevel` to `alltests()` (which is propagated to `run()`) of a test suite one
 can apply the level of detail for the output. If the level is set to `VERBOSE` then the test
 suite will print the result of every assertion. By passing `SPARSE` the summary of each test case
-is printed. `SILENT` will cancel any output. When developping on a new test suite teh `VERBOSE`
-level is best suited. Once all test cases pass, one can set the level to `SPARSE` to squash the
+is printed. `SILENT` will cancel any output. When developping on a new test suite the `VERBOSE`
+level is suited best. Once all test cases pass, one can set the level to `SPARSE` to squash the
 output.
 
 
@@ -157,7 +157,7 @@ If you want to abort a test case on a strong precondition you can use the `ABORT
 just like `TEST()` but exits the surrounding function if the assertion failed.
 
 You can skip a test with the `SKIP()` macro. The `INFO()` macro can be used to print a message,
-where as the `FAIL()` will print a message and add a failed test to the result.
+whereas the `FAIL()` will print a message and add a failed test to the result.
 
 ```c
 static TestResult example() {
@@ -221,7 +221,7 @@ TestResult run(const TestSuite* suite, PrintLevel verbosity);  // executes all t
 
 void printVerbose(const char* format, ...);  // print when level is set to VERBOSE or higher
 
-void printSparse(const char* format, ...);  // print if level is set to SPARSE or higher
+void printSparse(const char* format, ...);   // print if level is set to SPARSE or higher
 
-void printAlways(const char* format, ...);  // ignore the level and print
+void printAlways(const char* format, ...);   // ignore the level and print
 ```
