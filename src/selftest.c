@@ -167,7 +167,6 @@ static TestResult testCmpMemory() {
   TEST(assertEqualMemory(&val, exp, 4));
   }
 
-
   return result;
 }
 
