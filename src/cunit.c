@@ -134,6 +134,16 @@ void printSparse(const char* format, ...) {
 }
 
 
+void printSummary(const char* format, ...) {
+  if (printLevel >= SUMMARY) {
+    va_list args;
+    va_start(args, format);
+    vprintf(format, args);
+    va_end(args);
+  }
+}
+
+
 void printAlways(const char* format, ...) {
   va_list args;
   va_start(args, format);
@@ -195,7 +205,7 @@ TestResult run(const TestSuite* suite, PrintLevel verbosity) {
   printLevel = verbosity;
 
   TestResult result = {};
-  printSparse(BLU "[%s]" RST " %s\n", suite->name, suite->description);
+  printSummary(BLU "[%s]" RST " %s\n", suite->name, suite->description);
 
   for (int i = 0; i < suite->numTests; i++) {
     Test test = suite->tests[i];
@@ -224,9 +234,9 @@ TestResult run(const TestSuite* suite, PrintLevel verbosity) {
 
   float passedRatio = result.failedTests / (result.totalTests + FPRECISION);
   passedRatio = 100.0f * (1.0f - passedRatio);
-  printSparse(BLU "[%s]" RST " %d of %d tests failed (%.2f%% passed)\n",
+  printSummary(BLU "[%s]" RST " %d of %d tests failed (%.2f%% passed)\n",
               suite->name, result.failedTests, result.totalTests, passedRatio);
-  printSparse("\n");
+  printSummary("\n");
 
   printLevel = temp;
   return result;

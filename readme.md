@@ -78,9 +78,11 @@ Modifying Verbosity
 By passing a `PrintLevel` to `alltests()` (which is propagated to `run()`) of a test suite one
 can apply the level of detail for the output. If the level is set to `VERBOSE` then the test
 suite will print the result of every assertion. By passing `SPARSE` the summary of each test case
-is printed. `SILENT` will cancel any output. When developping on a new test suite the `VERBOSE`
-level is suited best. Once all test cases pass, one can set the level to `SPARSE` to squash the
-output.
+is printed. `SUMMARY` will print only the result of each test suite. `SILENT` will supress any
+output. When developping on a new test suite the `VERBOSE` level is suited best. Once all test
+cases pass, one can set the level to `SPARSE` or even to squash the output. If a test suite has
+many test cases the output can be reduced with the `SUMMARY` level even further. `SILENT` is best
+suited if one is only interested in the test result that is for instance used in some script.
 
 
 Writing Custom Assertions
@@ -186,7 +188,7 @@ cases. Results are collected in the `TestResult` structure and propagated to the
 typedef TestResult (*TEST_FN)();
 
 typedef enum PrintLevel {
-  SILENT, SPARSE, VERBOSE
+  SILENT, SUMMARY, SPARSE, VERBOSE
 } PrintLevel;
 
 typedef struct TestResult {

@@ -11,12 +11,13 @@ all: lib exe
 
 .PHONY: run
 run: exe
+	@echo ""
 	@bin/main
 	@echo "--------------------------------------------------------------------------------"
 
 
 .PHONY: lib
-lib:
+lib: deps
 	mkdir -p temp/
 	mkdir -p lib/
 	clang ${OPT} -c -Iinclude/ -o temp/cunit.o src/cunit.c
@@ -25,9 +26,21 @@ lib:
 
 
 .PHONY: exe
-exe: lib
+exe: deps lib
 	mkdir -p bin/
 	clang ${OPT} -Iinclude/ -Llib/ -o bin/main src/*.c -lcunit
+
+
+.PHONY: test
+test: test_deps lib
+
+
+.PHONY: deps
+deps:
+
+
+.PHONY: test_deps
+test_deps:
 
 
 .PHONY: clean
