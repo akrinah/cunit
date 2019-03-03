@@ -225,5 +225,7 @@ void printVerbose(const char* format, ...);  // print when level is set to VERBO
 
 void printSparse(const char* format, ...);   // print if level is set to SPARSE or higher
 
+void printSummary(const char* format, ...);  // print if level is set to SUMMARY or higher
+
 void printAlways(const char* format, ...);   // ignore the level and print
 ```
