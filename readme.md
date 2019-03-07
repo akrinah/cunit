@@ -27,7 +27,8 @@ Adding CUnit to Your Project
 
 Add the *include/cunit.h* header file to the search path of your compiler and the *lib/libcunit.a*
 static library to the search path of your linker. Copy the `src/template.c` test suite template
-to your project and rename it if you wish. Follow the instructions written there.
+to your project and rename it if you wish. Follow the instructions written there. For compilation
+simply compile and link together all test files.
 
 
 Writing a Test Suite
@@ -38,7 +39,7 @@ declared as `static`. This way no name collisions should occur. To call the test
 `main()` function it is adviced to have an `alltests()` function inside the test suite. You can
 then compile all your test suites together with a `main()` function to create an executable test.
 
-```c
+```c {.line-numbers}
 // inside template.c
 #include "cunit.h"
 
@@ -66,7 +67,7 @@ extern TestResult template_alltests(PrintLevel);
 int main() {
   TestResult result = {};
   result = unite(result, template_alltests(VERBOSE));
-  printf("Result: %d of %d tests failed\n", result.failedTests, result.totalTests);
+  printResult(result);
   return 0;
 }
 ```
@@ -90,7 +91,7 @@ Writing Custom Assertions
 
 CUnit comes with a bunch of assert functions.
 
-```c
+```c {.line-numbers}
 bool assertFalse(bool cond);
 bool assertTrue(bool cond);
 
@@ -126,7 +127,7 @@ bool assertEqualMemory(const void* pointer, const void* expected, size_t length)
 
 If they don't suffice your needs you can simply write your own assert function.
 
-```c
+```c {.line-numbers}
 #include "cunit.h"
 
 #define assertEqual(val, exp) __assertEqual(__FILE__, __LINE__, val, exp)
@@ -161,7 +162,7 @@ just like `TEST()` but exits the surrounding function if the assertion failed.
 You can skip a test with the `SKIP()` macro. The `INFO()` macro can be used to print a message,
 whereas the `FAIL()` will print a message and add a failed test to the result.
 
-```c
+```c {.line-numbers}
 static TestResult example() {
   TestResult result = {};         // NECESSARY, macros expect it, do NOT change
   INFO("test with macros");       // simply prints a message
@@ -184,7 +185,7 @@ Data Structures and Functions
 The central point of CUnit is the `TestSuite` structure that stores and executes all added test
 cases. Results are collected in the `TestResult` structure and propagated to the caller.
 
-```c
+```c {.line-numbers}
 typedef TestResult (*TEST_FN)();
 
 typedef enum PrintLevel {
@@ -212,6 +213,8 @@ typedef struct TestSuite {
 TestResult unite(TestResult a, TestResult b);  // returns the united test results
 
 void apply(TestResult* result, bool testResult);  // applies a boolean to a result
+
+void printResult(TestResult result);  // print test result
 
 TestSuite newSuite(const char* name, const char* description);  // create new test suite
 

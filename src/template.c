@@ -10,7 +10,7 @@
  * int main() {
  *   TestResult result = {};
  *   result = unite(result, template_alltests(VERBOSE));
- *   printf("Result: %d of %d tests failed\n", result.failedTests, result.totalTests);
+ *   printResult(result);
  * }
  * ```
  *

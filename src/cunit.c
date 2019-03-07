@@ -169,6 +169,14 @@ void apply(TestResult* result, bool testResult) {
 }
 
 
+void printResult(TestResult result) {
+  float passedRatio = result.failedTests / (result.totalTests + FPRECISION);
+  passedRatio = 100.0f * (1.0f - passedRatio);
+  printf(BLU "[Result]" RST " %d of %d tests failed (%.2f%% passed)\n",
+         result.failedTests, result.totalTests, passedRatio);
+}
+
+
 TestSuite newSuite(const char* name, const char* description) {
   TestSuite suite = {};
   suite.name = name;

@@ -17,6 +17,8 @@ TestResult unite(TestResult a, TestResult b);
 
 void apply(TestResult* result, bool testResult);
 
+void printResult(TestResult r);
+
 
 typedef TestResult (*TEST_FN)();
 
