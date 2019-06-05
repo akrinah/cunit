@@ -220,7 +220,7 @@ TestResult run(const TestSuite* suite, PrintLevel verbosity) {
 
     if (printLevel < VERBOSE) {
       printSparse("%s ", test.name);
-      for(int i = strlen(test.name); i < 45; i++) printSparse(".");
+      for(int i = strlen(test.name); i < 60; i++) printSparse(".");
       printSparse("... ");
     } else {
       printSparse("%s ... \n", test.name);
@@ -242,8 +242,13 @@ TestResult run(const TestSuite* suite, PrintLevel verbosity) {
 
   float passedRatio = result.failedTests / (result.totalTests + FPRECISION);
   passedRatio = 100.0f * (1.0f - passedRatio);
-  printSummary(BLU "[%s]" RST " %d of %d tests failed (%.2f%% passed)\n",
-              suite->name, result.failedTests, result.totalTests, passedRatio);
+  printSummary(BLU "[%s]" RST " %d of %d tests %sfailed%s (%.2f%% %spassed%s)\n",
+               suite->name, result.failedTests, result.totalTests,
+               (result.failedTests > 0) ? RED : "",
+               (result.failedTests > 0) ? RST : "",
+               (result.failedTests == 0) ? GRN : "",
+               (result.failedTests == 0) ? RST : "",
+               passedRatio);
   printSummary("\n");
 
   printLevel = temp;
