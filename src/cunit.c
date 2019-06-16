@@ -194,7 +194,7 @@ void deleteSuite(TestSuite* suite) {
 }
 
 
-void addTest(TestSuite* suite, TEST_FN fn, const char* name) {
+void __addTest(TestSuite* suite, TEST_FN fn, const char* name) {
   Test* temp = (Test*) malloc((suite->numTests + 1) * sizeof(Test));
   if (temp == NULL) {
     printAlways(__PROMPT RED "FATAL: " RST "couldn't allocate memory for test [%s]\n",

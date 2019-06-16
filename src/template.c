@@ -51,8 +51,8 @@ static TestResult testWithMacros() {
 
 TestResult template_alltests(PrintLevel verbosity) {
   TestSuite suite = newSuite(__FILE__, "Test Suite Template");
-  addTest(&suite, &simpleTest,     "simpleTest");
-  addTest(&suite, &testWithMacros, "testWithMacros");
+  addTest(&suite, simpleTest);
+  addTest(&suite, testWithMacros);
   TestResult result = run(&suite, verbosity);
   deleteSuite(&suite);
   return result;

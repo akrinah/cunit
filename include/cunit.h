@@ -50,7 +50,8 @@ TestSuite newSuite(const char* name, const char* description);
 
 void deleteSuite(TestSuite* suite);
 
-void addTest(TestSuite* suite, TEST_FN fn, const char* name);
+#define addTest(suite, test) __addTest(suite, &test, #test)
+void __addTest(TestSuite* suite, TEST_FN fn, const char* name);
 
 TestResult run(const TestSuite* suite, PrintLevel verbosity);
 
