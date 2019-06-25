@@ -52,7 +52,7 @@ static TestResult testCase() {
 
 TestResult template_alltests(PrintLevel verbosity) {
   TestSuite suite = newSuite(__FILE__, "Test Suite Template");
-  addTest(&suite, &testCase, "testCase");
+  addTest(&suite, &testCase);
   TestResult result = run(&suite, verbosity);
   deleteSuite(&suite);
   return result;
@@ -220,7 +220,7 @@ TestSuite newSuite(const char* name, const char* description);  // create new te
 
 void deleteSuite(TestSuite* suite);  // delete all added tests
 
-void addTest(TestSuite* suite, TEST_FN fn, const char* name);  // adds a test case to a suite
+void addTest(TestSuite* suite, TEST_FN fn);  // adds a test case to a suite
 
 TestResult run(const TestSuite* suite, PrintLevel verbosity);  // executes all tests in a suite
 
